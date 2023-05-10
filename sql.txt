@@ -1,0 +1,90 @@
+-- Create table for Movie
+CREATE TABLE Movie (
+    id INT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    release_year INT,
+    runtime INT,
+    plot TEXT,
+    rating DECIMAL(3,1)
+);
+
+-- Create table for Media
+CREATE TABLE Media (
+    id INT PRIMARY KEY,
+    movie_id INT NOT NULL,
+    type ENUM('video', 'image') NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (movie_id) REFERENCES Movie(id)
+);
+
+-- Create table for Genre
+CREATE TABLE Genre (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create table for Movie_Genre mapping
+CREATE TABLE Movie_Genre (
+    movie_id INT NOT NULL,
+    genre_id INT NOT NULL,
+    PRIMARY KEY (movie_id, genre_id),
+    FOREIGN KEY (movie_id) REFERENCES Movie(id),
+    FOREIGN KEY (genre_id) REFERENCES Genre(id)
+);
+
+-- Create table for Review
+CREATE TABLE Review (
+    id INT PRIMARY KEY,
+    movie_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating DECIMAL(3,1) NOT NULL,
+    comment TEXT,
+    FOREIGN KEY (movie_id) REFERENCES Movie(id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
+);
+
+-- Create table for User
+CREATE TABLE User (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Create table for Artist
+CREATE TABLE Artist (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create table for Skill
+CREATE TABLE Skill (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create table for Artist_Skill mapping
+CREATE TABLE Artist_Skill (
+    artist_id INT NOT NULL,
+    skill_id INT NOT NULL,
+    PRIMARY KEY (artist_id, skill_id),
+    FOREIGN KEY (artist_id) REFERENCES Artist(id),
+    FOREIGN KEY (skill_id) REFERENCES Skill(id)
+);
+
+-- Create table for Role
+CREATE TABLE Role (
+    id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create table for Movie_Artist_Role mapping
+CREATE TABLE Movie_Artist_Role (
+    movie_id INT NOT NULL,
+    artist_id INT NOT NULL,
+    role_id INT NOT NULL,
+    PRIMARY KEY (movie_id, artist_id, role_id),
+    FOREIGN KEY (movie_id) REFERENCES Movie(id),
+    FOREIGN KEY (artist_id) REFERENCES Artist(id),
+    FOREIGN KEY (role_id) REFERENCES Role(id)
+);
